@@ -1,10 +1,26 @@
-import { Paper, Typography, List, Avatar, Box } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  List,
+  Avatar,
+  IconButton,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemAvatar,
+  ListItemText,
+  ListItemIcon,
+} from "@mui/material";
 
+import { Link } from "react-router-dom";
 import {
   HouseSimple,
   Ticket,
   Package,
-  UserCircle,
+  SignOut,
+  DropHalf,
+  Folders,
+  Gear,
 } from "@phosphor-icons/react";
 
 import { NavItem } from "./NavItem";
@@ -48,9 +64,27 @@ const navlinks: Array<INavLink> = [
     ],
   },
   {
-    text: "Profile",
-    icon: <UserCircle size={24} />,
-    path: "/profile",
+    text: "Documents",
+    icon: <Folders size={24} />,
+    path: "/documents",
+  },
+  {
+    text: "Administration",
+    icon: <Gear size={24} />,
+    children: [
+      {
+        text: "Company Details",
+        path: "/administration",
+      },
+      {
+        text: "Address Book",
+        path: "/administration/addressbook",
+      },
+      {
+        text: "User Management",
+        path: "/administration/users",
+      },
+    ],
   },
 ];
 
@@ -64,20 +98,24 @@ export const Sidebar = () => {
         maxWidth: 360,
       }}
     >
-      <Typography
-        variant="h1"
-        textAlign="center"
-        sx={{
-          p: 2,
-        }}
-      >
-        ACRONYME
-      </Typography>
       <List
         sx={{
           width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
         }}
+        disablePadding
       >
+        <ListItem>
+          <ListItemIcon>
+            <DropHalf size={32} weight="light" color="black" />
+          </ListItemIcon>
+          <ListItemText
+            primary={<Typography variant="h1">ACRONYME</Typography>}
+          />
+        </ListItem>
+        <Divider />
         {navlinks.map((navlink) => {
           return (
             <NavItem
@@ -88,21 +126,34 @@ export const Sidebar = () => {
             />
           );
         })}
-      </List>
+        <ListItem
+          sx={{
+            marginTop: "auto",
+          }}
+        >
+          <ListItemText secondary="&copy; 2023 Noah Vögelin" />
+        </ListItem>
+        <Divider />
 
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          p: 2,
-        }}
-      >
-        <Avatar src="https://randomuser.me/api/portraits/men/62.jpg"></Avatar>
-        <Box>
-          <Typography>James Ward</Typography>
-          <Typography>james.ward@orbain.com</Typography>
-        </Box>
-      </Box>
+        <ListItem
+          disablePadding
+          secondaryAction={
+            <IconButton edge="end" onClick={() => window.alert("Signed Out")}>
+              <SignOut />
+            </IconButton>
+          }
+        >
+          <ListItemButton disableRipple component={Link} to={`/profile`}>
+            <ListItemAvatar>
+              <Avatar src="https://randomuser.me/api/portraits/men/62.jpg" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="James Ward"
+              secondary="james.ward@orbain.com"
+            />
+          </ListItemButton>
+        </ListItem>
+      </List>
     </Paper>
   );
 };

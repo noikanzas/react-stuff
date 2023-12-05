@@ -2,6 +2,7 @@ import {
   Paper,
   Typography,
   List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -44,7 +45,7 @@ export const NavItem: React.FC<NavItemProps> = ({
 
   if (children && children.length > 0) {
     return (
-      <>
+      <ListItem disablePadding sx={{ display: "block" }}>
         <ListItemButton onClick={handleClick}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText primary={text}></ListItemText>
@@ -62,13 +63,15 @@ export const NavItem: React.FC<NavItemProps> = ({
             );
           })}
         </Collapse>
-      </>
+      </ListItem>
     );
   }
   return (
-    <ListItemButton component={Link} to={path}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={text}></ListItemText>
-    </ListItemButton>
+    <ListItem disablePadding sx={{ display: "block" }}>
+      <ListItemButton component={Link} to={path}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={text}></ListItemText>
+      </ListItemButton>
+    </ListItem>
   );
 };
