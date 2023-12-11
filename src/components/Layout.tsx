@@ -1,9 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { Box, Divider, Container, Paper } from "@mui/material";
+import { Box, Divider, Typography, Paper } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 import { Sidebar } from "./Sidebar";
+import { useDataSync } from "../hooks/useDataSync";
 
 export const Layout = () => {
+  const { isSyncing, lastSyncTime } = useDataSync();
+
   return (
     <Box
       sx={{
@@ -27,6 +30,9 @@ export const Layout = () => {
         >
           <Outlet />
         </Box>
+        <Typography>
+          Syncing: {isSyncing ? "Syncing database" : "Sync completed"}
+        </Typography>
       </Paper>
     </Box>
   );

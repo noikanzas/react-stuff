@@ -24,8 +24,8 @@ import {
 } from "@phosphor-icons/react";
 
 import { NavItem } from "./NavItem";
-
-const navlinks: Array<INavLink> = [
+import { NavLink } from "../config/typings";
+const navlinks: Array<NavLink> = [
   {
     text: "Home",
     path: "/",

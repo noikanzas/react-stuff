@@ -21,12 +21,12 @@ import {
 } from "@phosphor-icons/react";
 
 import { useState } from "react";
-
+import { NavLink } from "../config/typings";
 interface NavItemProps {
   text: string;
   icon?: React.ReactElement;
   path?: string;
-  children?: Array<INavLink>;
+  children?: Array<NavLink>;
   isOpen?: boolean;
 }
 
