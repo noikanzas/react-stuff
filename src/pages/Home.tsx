@@ -22,7 +22,9 @@ export const Home = () => {
     ToggleButtonValue.table
   );
 
-  const machines = useLiveQuery(() => db.nvo_machines.toArray());
+  const machines = useLiveQuery(() =>
+    db.nvo_machines.orderBy("nvo_name").toArray()
+  );
 
   if (!machines) {
     return <div>Loading...</div>;

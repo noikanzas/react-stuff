@@ -16,10 +16,35 @@ export interface Optionset {
 }
 
 export interface Machine {
-  nvo_machineId?: string;
+  nvo_machineId: string;
   nvo_name: string;
   nvo_serialnumber: string;
   nvo_machinehours: number;
   nvo_machinehourssinceservice: number;
+  nvo_accountid: Lookup;
+  nvo_locationid: Lookup;
+  nvo_factorylineid: Lookup;
   modifiedon: string;
+  createdon: string;
+}
+
+export interface Location {
+  nvo_locationId: string;
+  nvo_name: string;
+  nvo_accountid: Lookup;
+  nvo_addresscity: string;
+  nvo_addresscountryid: Lookup;
+  nvo_addresspostalcode: string;
+  nvo_addressstreet: string;
+  modifiedon: string;
+  createdon: string;
+}
+
+export interface FactoryLine {
+  nvo_factorylineId: string;
+  nvo_name: string;
+  nvo_accountid: Lookup;
+  nvo_locationid: Lookup;
+  modifiedon: string;
+  createdon: string;
 }
