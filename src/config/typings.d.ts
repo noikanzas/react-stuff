@@ -16,7 +16,7 @@ export interface Optionset {
 }
 
 export interface MachineTableData {
-  machineId: string;
+  id: string;
   name: string;
   serialnumber: string;
   machineHours: number;
@@ -36,24 +36,29 @@ export interface DataTableColumn {
 }
 
 export interface Machine {
-  nvo_machineId: string;
+  id: string;
   nvo_name: string;
   nvo_serialnumber: string;
   nvo_machinehours: number;
   nvo_machinehourssinceservice: number;
-  nvo_accountid: Lookup;
-  nvo_locationid: Lookup;
-  nvo_factorylineid: Lookup;
+  nvo_accountid: string;
+  nvo_accountid_name: string;
+  nvo_locationid: string;
+  nvo_locationid_name: string;
+  nvo_factorylineid: string;
+  nvo_factorylineid_name: string;
   modifiedon: string;
   createdon: string;
 }
 
 export interface Location {
-  nvo_locationId: string;
+  id: string;
   nvo_name: string;
-  nvo_accountid: Lookup;
+  nvo_accountid: string;
+  nvo_accountid_name: string;
   nvo_addresscity: string;
-  nvo_addresscountryid: Lookup;
+  nvo_addresscountryid: string;
+  nvo_addresscountryid_name: string;
   nvo_addresspostalcode: string;
   nvo_addressstreet: string;
   modifiedon: string;
@@ -61,10 +66,12 @@ export interface Location {
 }
 
 export interface FactoryLine {
-  nvo_factorylineId: string;
+  id: string;
   nvo_name: string;
-  nvo_accountid: Lookup;
-  nvo_locationid: Lookup;
+  nvo_accountid: string;
+  nvo_accountid_name: string;
+  nvo_locationid: string;
+  nvo_locationid_name: string;
   modifiedon: string;
   createdon: string;
 }

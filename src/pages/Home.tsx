@@ -9,9 +9,7 @@ import { GridFour } from "@phosphor-icons/react";
 import { Table } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import { MachineTiles } from "../components/MachineTiles";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../db";
-import { DataTableColumn, DataRecord } from "../config/typings";
+import { DataTableColumn } from "../config/typings";
 import { DataTable } from "../components/DataTable/DataTable";
 import useMachineTable from "../hooks/useMachineTable";
 
@@ -71,38 +69,35 @@ export const Home = () => {
     setDisplay(value);
   };
   return (
-    <>
-      <Typography variant="h1">Hi James,</Typography>
-      <Paper sx={{ p: 2 }}>
-        <Stack direction="row">
-          <Typography variant="h1">Machine Overview</Typography>
-          <ToggleButtonGroup
-            value={display}
-            onChange={handleDisplay}
-            exclusive
-            sx={{
-              ml: "auto",
-            }}
-          >
-            <ToggleButton value={ToggleButtonValue.tiles}>
-              <GridFour size={24} />
-            </ToggleButton>
-            <ToggleButton value={ToggleButtonValue.table}>
-              <Table size={24} />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
-        {display === ToggleButtonValue.tiles && <MachineTiles />}
-        {display === ToggleButtonValue.table && (
-          <DataTable
-            columns={machineTableColumns}
-            records={machines}
-            handleSortChange={handleSortChange}
-            orderBy={orderBy}
-            orderDirection={orderDirection}
-          />
-        )}
-      </Paper>
-    </>
+    <Paper sx={{ p: 2 }}>
+      <Stack direction="row">
+        <Typography variant="h2">Machine Overview</Typography>
+        <ToggleButtonGroup
+          value={display}
+          onChange={handleDisplay}
+          exclusive
+          sx={{
+            ml: "auto",
+          }}
+        >
+          <ToggleButton value={ToggleButtonValue.tiles}>
+            <GridFour size={24} />
+          </ToggleButton>
+          <ToggleButton value={ToggleButtonValue.table}>
+            <Table size={24} />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Stack>
+      {display === ToggleButtonValue.tiles && <MachineTiles />}
+      {display === ToggleButtonValue.table && (
+        <DataTable
+          columns={machineTableColumns}
+          records={machines}
+          handleSortChange={handleSortChange}
+          orderBy={orderBy}
+          orderDirection={orderDirection}
+        />
+      )}
+    </Paper>
   );
 };

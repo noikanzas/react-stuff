@@ -112,7 +112,8 @@ export const Sidebar = () => {
             <DropHalf size={32} weight="light" color="black" />
           </ListItemIcon>
           <ListItemText
-            primary={<Typography variant="h1">ACRONYME</Typography>}
+            primary={<Typography variant="h1">APPLICATION</Typography>}
+            secondary={<Typography variant="h3">work in progress</Typography>}
           />
         </ListItem>
         <Divider />

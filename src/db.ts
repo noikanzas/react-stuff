@@ -2,7 +2,7 @@ import Dexie, { Table } from "dexie";
 import { Machine, Location, FactoryLine } from "./config/typings";
 
 const MACHINE_V1 = [
-  "nvo_machineId",
+  "id",
   "nvo_name",
   "nvo_serialnumber",
   "nvo_machinehours",
@@ -10,29 +10,32 @@ const MACHINE_V1 = [
   "modifiedon",
   "createdon",
   "nvo_accountid",
+  "nvo_accountid_name",
   "nvo_locationid",
-  "nvo_locationid.id",
-  "nvo_locationid.name",
+  "nvo_locationid_name",
   "nvo_factorylineid",
-  "nvo_factorylineid.id",
-  "nvo_factorylineid.name",
+  "nvo_factorylineid_name",
 ];
 
 const FACTORYLINE_V1 = [
-  "nvo_factorylineId",
+  "id",
   "nvo_name",
   "nvo_accountid",
+  "nvo_accountid_name",
   "nvo_locationid",
+  "nvo_locationid_name",
   "modifiedon",
   "createdon",
 ];
 
 const LOCATION_V1 = [
-  "nvo_locationId",
+  "id",
   "nvo_name",
   "nvo_accountid",
+  "nvo_accountid_name",
   "nvo_addresscity",
   "nvo_addresscountryid",
+  "nvo_addresscountryid_name",
   "nvo_addresspostalcode",
   "nvo_addressstreet",
   "modifiedon",

@@ -24,37 +24,41 @@ const useMachineTable = (
 
   const machines = useLiveQuery(async () => {
     try {
+      // Apply sorting
       let queryOrderBy = orderBy.toString();
       if (queryOrderBy === "factoryline") {
-        queryOrderBy = "nvo_factorylineid.name";
+        queryOrderBy = "nvo_factorylineid_name";
       } else if (queryOrderBy === "location") {
-        queryOrderBy = "nvo_locationid.name";
+        queryOrderBy = "nvo_locationid_name";
       }
 
-      let query = db.nvo_machines.orderBy(queryOrderBy);
+      let collection = db.nvo_machines.orderBy(queryOrderBy);
       if (orderDirection !== "asc") {
-        query = query.reverse();
+        collection = collection.reverse();
       }
 
-      const fetchedMachines = await query.toArray();
-      return await Promise.all(
-        fetchedMachines.map(async (machine) => {
-          const location = await db.nvo_locations.get(
-            machine.nvo_locationid.id
-          );
-          return {
-            id: machine.nvo_machineId,
-            nvo_name: machine.nvo_name,
-            nvo_serialnumber: machine.nvo_serialnumber,
-            nvo_machinehours: machine.nvo_machinehours,
-            nvo_machinehourssinceservice: machine.nvo_machinehourssinceservice,
-            location: location ? location.nvo_name : "---",
-            factoryline: machine.nvo_factorylineid
-              ? machine.nvo_factorylineid.name
-              : "---",
-          };
-        })
-      );
+      const fetchedMachines = await collection.toArray();
+
+      // Fetch the primary data
+
+      // Process each machine to fetch additional data
+      const processedMachines = fetchedMachines.map(async (machine) => {
+        const location = await db.nvo_locations.get(machine.nvo_locationid);
+        return {
+          id: machine.id,
+          nvo_name: machine.nvo_name,
+          nvo_serialnumber: machine.nvo_serialnumber,
+          nvo_machinehours: machine.nvo_machinehours,
+          nvo_machinehourssinceservice: machine.nvo_machinehourssinceservice,
+          location: location ? location.nvo_name : "---",
+          factoryline: machine.nvo_factorylineid
+            ? machine.nvo_factorylineid_name
+            : "---",
+        };
+      });
+
+      // Wait for all processing to complete
+      return await Promise.all(processedMachines);
     } catch (err) {
       setError(err as Error);
     }
