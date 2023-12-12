@@ -15,6 +15,26 @@ export interface Optionset {
   label: string;
 }
 
+export interface MachineTableData {
+  machineId: string;
+  name: string;
+  serialnumber: string;
+  machineHours: number;
+  machineHoursSinceService: number;
+  factoryLine: string;
+  location: string;
+}
+
+export interface DataRecord {
+  id: string;
+  [key: string]: string | number;
+}
+
+export interface DataTableColumn {
+  id: keyof DataRecord;
+  label: string;
+}
+
 export interface Machine {
   nvo_machineId: string;
   nvo_name: string;

@@ -11,7 +11,11 @@ const MACHINE_V1 = [
   "createdon",
   "nvo_accountid",
   "nvo_locationid",
+  "nvo_locationid.id",
+  "nvo_locationid.name",
   "nvo_factorylineid",
+  "nvo_factorylineid.id",
+  "nvo_factorylineid.name",
 ];
 
 const FACTORYLINE_V1 = [
