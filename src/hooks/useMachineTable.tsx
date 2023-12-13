@@ -2,13 +2,19 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../db";
 import { DataRecord } from "../config/typings";
+import {
+  DataTablePaginationState,
+  DataTableSort,
+} from "../components/DataTable/DataTable";
 
 interface useMachineTableReturn {
   machines: DataRecord[] | undefined;
   isLoading: boolean;
   error: Error | null;
-  orderBy: keyof DataRecord;
-  orderDirection: "asc" | "desc";
+  pagination: DataTablePaginationState;
+  sort: DataTableSort;
+  recordCount: number;
+  handlePaginationChange: (page: number, pageSize: number) => void;
   handleSortChange: (newSort: keyof DataRecord) => void;
 }
 
@@ -16,34 +22,54 @@ const useMachineTable = (
   initialSortBy: keyof DataRecord = "nvo_name",
   initialSortDirection: "asc" | "desc" = "asc"
 ): useMachineTableReturn => {
-  const [orderBy, setOrderBy] = useState<keyof DataRecord>(initialSortBy);
-  const [orderDirection, setOrderDirection] = useState<"asc" | "desc">(
-    initialSortDirection
-  );
+  const [sort, setSort] = useState<DataTableSort>({
+    orderBy: initialSortBy,
+    direction: initialSortDirection,
+  });
+  const [pagination, setPagination] = useState<DataTablePaginationState>({
+    page: 0,
+    pageSize: 5,
+  });
+
+  const [recordCount, setRecordCount] = useState<number>(0);
+
   const [error, setError] = useState<Error | null>(null);
 
   const machines = useLiveQuery(async () => {
     try {
       // Apply sorting
-      let queryOrderBy = orderBy.toString();
+      let queryOrderBy = sort.orderBy.toString();
       if (queryOrderBy === "factoryline") {
         queryOrderBy = "nvo_factorylineid_name";
       } else if (queryOrderBy === "location") {
         queryOrderBy = "nvo_locationid_name";
       }
 
+      //TODO: FILTER IMPLEMENTATION
+
+      //Sorting
       let collection = db.nvo_machines.orderBy(queryOrderBy);
-      if (orderDirection !== "asc") {
+      if (sort.direction !== "asc") {
         collection = collection.reverse();
       }
 
-      const fetchedMachines = await collection.toArray();
+      //GET Record Count¨
+      setRecordCount(await collection.count());
+
+      //calculate offset
+      const offset = pagination.page * pagination.pageSize;
+      const fetchedMachines = await collection
+        .offset(offset)
+        .limit(pagination.pageSize)
+        .toArray();
 
       // Fetch the primary data
 
       // Process each machine to fetch additional data
       const processedMachines = fetchedMachines.map(async (machine) => {
-        const location = await db.nvo_locations.get(machine.nvo_locationid);
+        const location = machine.nvo_locationid
+          ? await db.nvo_locations.get(machine.nvo_locationid)
+          : undefined;
         return {
           id: machine.id,
           nvo_name: machine.nvo_name,
@@ -56,32 +82,41 @@ const useMachineTable = (
             : "---",
         };
       });
+      console.log("exec query");
 
       // Wait for all processing to complete
       return await Promise.all(processedMachines);
     } catch (err) {
       setError(err as Error);
     }
-  }, [orderBy, orderDirection]);
+  }, [sort, pagination]);
 
   const isLoading = machines === undefined;
 
-  const handleSortChange = (newSort: keyof DataRecord) => {
-    if (orderBy === newSort) {
-      setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
-    } else {
-      setOrderBy(newSort);
-      setOrderDirection("asc");
-    }
+  const handlePaginationChange = (page: number, pageSize: number) => {
+    setPagination({ page, pageSize });
+  };
+
+  const handleSortChange = (orderBy: keyof DataRecord) => {
+    const direction =
+      sort.orderBy === orderBy
+        ? sort.direction === "asc"
+          ? "desc"
+          : "asc"
+        : "asc";
+    setSort({ orderBy, direction });
+    setPagination((previousState) => ({ ...previousState, page: 0 }));
   };
 
   return {
     machines,
     isLoading,
     error,
-    orderBy,
-    orderDirection,
+    sort,
+    pagination,
+    recordCount,
     handleSortChange,
+    handlePaginationChange,
   };
 };
 

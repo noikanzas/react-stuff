@@ -54,11 +54,19 @@ export const Home = () => {
     machines,
     isLoading,
     error,
-    orderBy,
-    orderDirection,
+    sort,
+    pagination,
+    recordCount,
     handleSortChange,
+    handlePaginationChange,
   } = useMachineTable();
-  if (!machines) {
+
+  if (error) {
+    console.log("error in Home", error);
+    return <div>Whoopsie: {error.message}</div>;
+  }
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -93,9 +101,11 @@ export const Home = () => {
         <DataTable
           columns={machineTableColumns}
           records={machines}
+          sort={sort}
           handleSortChange={handleSortChange}
-          orderBy={orderBy}
-          orderDirection={orderDirection}
+          pagination={pagination}
+          handlePaginationChange={handlePaginationChange}
+          recordCount={recordCount}
         />
       )}
     </Paper>
