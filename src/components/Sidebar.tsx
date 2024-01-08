@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Paper,
   Typography,
@@ -12,7 +13,7 @@ import {
   ListItemIcon,
 } from "@mui/material";
 
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import {
   HouseSimple,
   Ticket,
@@ -66,7 +67,7 @@ const navlinks: Array<NavLink> = [
   {
     text: "Documents",
     icon: <Folders size={24} />,
-    path: "/documents",
+    path: "/library",
   },
   {
     text: "Administration",

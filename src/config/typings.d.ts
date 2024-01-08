@@ -1,10 +1,13 @@
+import { RoutePaths } from "@tanstack/react-router";
+import { routeTree } from "../routeTree.gen";
+
+type RoutePath = RoutePaths<typeof routeTree>;
 export interface NavLink {
   text: string;
   icon?: React.ReactElement;
-  path?: string;
-  children?: Array<{ text: string; path?: string }>;
+  path?: RoutePath;
+  children?: Array<{ text: string; path?: RoutPath }>;
 }
-
 export interface Lookup {
   id: string;
   name: string;

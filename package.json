@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "concurrently \"tsr watch\" \"vite --port=5173\"",
         "build": "tsc && vite build",
         "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
     },
@@ -14,11 +14,15 @@
         "@mui/icons-material": "^5.14.0",
         "@mui/material": "^5.14.2",
         "@phosphor-icons/react": "^2.0.15",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-router-dom": "6.3",
+        "@tanstack/bling": "^0.5.0",
+        "@tanstack/react-router": "1.1.10",
+        "@tanstack/router-cli": "*",
+        "@tanstack/router-devtools": "1.1.10",
+        "concurrently": "^8.2.2",
         "dexie": "^3.2.4",
-        "dexie-react-hooks": "^1.1.6"
+        "dexie-react-hooks": "^1.1.6",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
         "@types/react": "^18.2.14",

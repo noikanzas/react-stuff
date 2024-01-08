@@ -12,6 +12,11 @@ import { MachineTiles } from "../components/MachineTiles";
 import { DataTableColumn } from "../config/typings";
 import { DataTable } from "../components/DataTable/DataTable";
 import useMachineTable from "../hooks/useMachineTable";
+import { FileRoute } from "@tanstack/react-router";
+
+export const Route = new FileRoute('/').createRoute({
+  component: HomeComponent,
+});
 
 enum ToggleButtonValue {
   tiles,
@@ -45,7 +50,7 @@ const machineTableColumns: Array<DataTableColumn> = [
   },
 ];
 
-export const Home = () => {
+function HomeComponent() {
   const [display, setDisplay] = useState<ToggleButtonValue>(
     ToggleButtonValue.table
   );
@@ -110,4 +115,4 @@ export const Home = () => {
       )}
     </Paper>
   );
-};
+}
