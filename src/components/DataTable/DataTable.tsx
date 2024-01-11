@@ -4,10 +4,21 @@ import {
   TableBody,
   Alert,
   TablePagination,
+  Stack,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { DataTableColumn, DataRecord } from "../../config/typings";
 import { DataTableHeadCell } from "./DataTableHeadCell";
 import { DataTableRow } from "./DataTableRow";
+import { X } from "@phosphor-icons/react";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "../../db";
+
 interface DataTableProps {
   columns: Array<DataTableColumn>;
   records: Array<DataRecord>;
@@ -49,6 +60,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   if (records.length > 0) {
     return (
       <>
+        <DataTableFilter />
         <Table>
           <TableHead>
             {columns.map((column) => {
@@ -71,7 +83,7 @@ export const DataTable: React.FC<DataTableProps> = ({
           </TableBody>
         </Table>
         <TablePagination
-          rowsPerPageOptions={[5, 10]}
+          rowsPerPageOptions={[20, 50]}
           component="div"
           count={recordCount}
           rowsPerPage={pagination.pageSize}
@@ -89,5 +101,42 @@ export const DataTable: React.FC<DataTableProps> = ({
     <>
       <Alert severity="info">No Data Found</Alert>
     </>
+  );
+};
+
+interface DataTableFilterItem {
+  label: string;
+  type: "search" | "select";
+}
+
+const DataTableFilter = () => {
+  const locations = useLiveQuery(() => db.nvo_locations.toArray());
+
+  if (!locations) {
+    return <div>Loading or Error</div>;
+  }
+  return (
+    <Stack
+      sx={{ my: 2 }}
+      direction="row"
+      gap="2"
+      justifyContent="space-between"
+    >
+      <Stack direction="row" gap={2}>
+        <TextField label="Search" variant="outlined"></TextField>
+        <FormControl sx={{ minWidth: 120 }}>
+          <InputLabel> Location</InputLabel>
+          <Select label="Location" variant="outlined">
+            <MenuItem value=" "></MenuItem>
+            {locations.map((location) => (
+              <MenuItem value={location.id}>{location.nvo_name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Stack>
+      <Button variant="outlined" startIcon={<X size={24} />}>
+        Clear
+      </Button>
+    </Stack>
   );
 };

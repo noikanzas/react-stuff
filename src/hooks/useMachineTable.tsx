@@ -28,7 +28,7 @@ const useMachineTable = (
   });
   const [pagination, setPagination] = useState<DataTablePaginationState>({
     page: 0,
-    pageSize: 5,
+    pageSize: 20,
   });
 
   const [recordCount, setRecordCount] = useState<number>(0);
